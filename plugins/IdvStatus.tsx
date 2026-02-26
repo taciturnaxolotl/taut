@@ -2,6 +2,7 @@
 
 import { TautPlugin, type TautPluginConfig, type TautAPI } from '../core/Plugin'
 
+const HACKCLUB_TEAM_ID = 'E09V59WQY1E'
 const IDV_API_URL = 'https://identity.hackclub.com/api/external/check'
 const IDV_CACHE_KEY = 'slack_idv_status_v2'
 const IDV_CACHE_TIMESTAMP_KEY = 'slack_idv_status_timestamp_v2'
@@ -24,6 +25,11 @@ export default class IdvStatus extends TautPlugin {
 
   start(): void {
     this.log('Starting')
+
+    if (!location.pathname.includes(`/client/${HACKCLUB_TEAM_ID}`)) {
+      this.log('Not in Hack Club workspace, skipping')
+      return
+    }
 
     this.loadIdvCache()
 

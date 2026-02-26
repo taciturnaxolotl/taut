@@ -2,6 +2,7 @@
 
 import { TautPlugin, type TautPluginConfig, type TautAPI } from '../core/Plugin'
 
+const HACKCLUB_TEAM_ID = 'E09V59WQY1E'
 const API_URL = 'https://hackatime.hackclub.com/api/admin/v1/execute'
 const CACHE_KEY = 'shinigami_trust_levels'
 const CACHE_TIMESTAMP_KEY = 'shinigami_trust_levels_timestamp'
@@ -59,6 +60,11 @@ export default class ShinigamiEyes extends TautPlugin {
 
   start() {
     this.log('Starting')
+
+    if (!location.pathname.includes(`/client/${HACKCLUB_TEAM_ID}`)) {
+      this.log('Not in Hack Club workspace, skipping')
+      return
+    }
 
     if (!this.config.apiToken) {
       this.log('Warning: No API token configured. Set apiToken in config.jsonc')
